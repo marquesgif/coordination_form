@@ -10,8 +10,12 @@ import { Textarea } from "./components/ui/textarea";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "./components/ui/input-group";
 import { User2 } from "lucide-react";
 import { createRequestService } from "./services/request.service";
+import { useState } from "react";
+import { Spinner } from "./components/ui/spinner";
+import { toast } from "sonner";
 
 function App() {
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<RequestFormData>({
     resolver: zodResolver(RequestSchema) as Resolver<RequestFormData>,
     defaultValues: {
@@ -28,13 +32,17 @@ function App() {
 
   const onSubmit = async (data: RequestFormData) => {
     try {
+      setIsLoading(true);
       const result = await createRequestService(data);
       console.log("Solicitação criada:", result);
+      toast.success("Solicitação enviada com sucesso", { position: "top-center", });
 
       form.reset(); // limpa o formulário
     } catch (error) {
       console.error("Erro ao enviar solicitação:", error);
-      alert("Erro ao enviar solicitação. Tente novamente.");
+      toast.error("Falha ao enviar solicitação. Tente novamente.", { position: "top-center" });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -42,7 +50,7 @@ function App() {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="">
-          <div className="h-screen flex items-center justify-center bg-gray-100 px-4">
+          <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-4 rounded-md">
             <div className="w-full max-w-3xl bg-white p-4 rounded-xl shadow">
 
               <div className="flex justify-center mb-6">
@@ -52,6 +60,8 @@ function App() {
                   className="h-24 object-contain"
                 />
               </div>
+
+              <h1 className="my-5 text-lg font-bold">Formulário de Requisitação - Coordenação de Ciências da Computação</h1>
 
               <div className="md:flex gap-5">
                 <FormField
@@ -171,8 +181,15 @@ function App() {
                 )}
               />
 
-              <Button type="submit" className="w-full text-md font-bold bg-blue-900 hover:bg-blue-950 cursor-pointer">
-                Enviar Solicitação
+              <Button
+                type="submit"
+                className="w-full text-md font-bold bg-blue-900 hover:bg-blue-950 cursor-pointer"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <Spinner />
+                ) : "Enviar Solicitação"}
+
               </Button>
             </div>
           </div>
