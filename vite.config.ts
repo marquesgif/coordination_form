@@ -6,7 +6,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: "/coordination-form/",
+  base: "/coordination_form/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
