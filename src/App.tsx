@@ -34,12 +34,10 @@ function App() {
     try {
       setIsLoading(true);
       const result = await createRequestService(data);
-      console.log("Solicitação criada:", result);
       toast.success("Solicitação enviada com sucesso", { position: "top-center", });
 
       form.reset(); // limpa o formulário
     } catch (error) {
-      console.error("Erro ao enviar solicitação:", error);
       toast.error("Falha ao enviar solicitação. Tente novamente.", { position: "top-center" });
     } finally {
       setIsLoading(false);
