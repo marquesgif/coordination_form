@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useForm, type Resolver } from "react-hook-form";
 import './App.css'
 import { Form, FormControl, FormField, FormItem, FormLabel } from './components/ui/form'
@@ -33,7 +34,7 @@ function App() {
   const onSubmit = async (data: RequestFormData) => {
     try {
       setIsLoading(true);
-      const result = await createRequestService(data);
+      await createRequestService(data);
       toast.success("Solicitação enviada com sucesso", { position: "top-center", });
 
       form.reset(); // limpa o formulário
@@ -189,6 +190,8 @@ function App() {
                 ) : "Enviar Solicitação"}
 
               </Button>
+
+              <p className="mt-4">Criado por <span className="font-bold text-blue-950 dark:text-blue-500">Super SAD</span></p>
             </div>
           </div>
         </form>
